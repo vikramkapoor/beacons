@@ -12,10 +12,9 @@ import io.flutter.plugin.common.PluginRegistry
 import io.intheloup.beacons.BeaconsPlugin
 import io.intheloup.beacons.data.Permission
 import io.intheloup.beacons.data.Result
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
 import java.util.*
-import kotlin.coroutines.experimental.suspendCoroutine
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class PermissionClient {
 
@@ -64,8 +63,8 @@ class PermissionClient {
             is PermissionResult.Granted -> cont.resume(current)
             is PermissionResult.Denied -> {
                 val callback = Callback<Unit, Unit>(
-                        success = { _ -> cont.resume(PermissionResult.Granted) },
-                        failure = { _ -> cont.resume(PermissionResult.Denied) }
+                        success = { cont.resume(PermissionResult.Granted) },
+                        failure = { cont.resume(PermissionResult.Denied) }
                 )
                 permissionCallbacks.add(callback)
                 ActivityCompat.requestPermissions(activity!!, arrayOf(permission.manifestValue), BeaconsPlugin.Intents.PermissionRequestId)
