@@ -13,8 +13,12 @@ import android.util.Log
 import io.intheloup.beacons.BeaconsPlugin
 import io.intheloup.beacons.channel.DataRequest
 import io.intheloup.beacons.data.*
+
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.android.UI
 import kotlinx.coroutines.launch
+
 import org.altbeacon.beacon.*
 import org.altbeacon.beacon.logging.LogManager
 import org.altbeacon.beacon.logging.Loggers
@@ -107,7 +111,7 @@ class BeaconsClient(private val permissionClient: PermissionClient) : BeaconCons
 
         requests.add(request)
 
-        launch(UI) {
+        GlobalScope.launch(UI, CoroutineStart.DEFAULT, null, {
             val result = permissionClient.request(permission)
             if (result !== PermissionClient.PermissionResult.Granted) {
                 request.callback!!(result.result)
@@ -119,7 +123,7 @@ class BeaconsClient(private val permissionClient: PermissionClient) : BeaconCons
             }
 
             startRequest(request)
-        }
+        })
     }
 
     fun removeRequest(request: Operation) {

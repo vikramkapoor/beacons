@@ -63,8 +63,8 @@ class PermissionClient {
             is PermissionResult.Granted -> cont.resume(current)
             is PermissionResult.Denied -> {
                 val callback = Callback<Unit, Unit>(
-                        success = { cont.resume(PermissionResult.Granted) },
-                        failure = { cont.resume(PermissionResult.Denied) }
+                        success = { _ -> cont.resume(PermissionResult.Granted) },
+                        failure = { _ -> cont.resume(PermissionResult.Denied) }
                 )
                 permissionCallbacks.add(callback)
                 ActivityCompat.requestPermissions(activity!!, arrayOf(permission.manifestValue), BeaconsPlugin.Intents.PermissionRequestId)

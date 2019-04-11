@@ -6,6 +6,7 @@ package io.intheloup.beacons.channel
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
+
 import io.intheloup.beacons.BeaconsPlugin
 import io.intheloup.beacons.data.Permission
 import io.intheloup.beacons.data.RegionModel
@@ -14,6 +15,11 @@ import io.intheloup.beacons.logic.BeaconsClient
 import io.intheloup.beacons.logic.PermissionClient
 import io.intheloup.beacons.logic.SharedMonitor
 import io.intheloup.streamschannel.StreamsChannel
+
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.android.Main
 import kotlinx.coroutines.android.UI
 import kotlinx.coroutines.launch
 
@@ -50,9 +56,9 @@ class Channels(private val permissionClient: PermissionClient,
     }
 
     private fun requestPermission(permission: Permission, result: MethodChannel.Result) {
-        launch(UI) {
+        GlobalScope.launch(Dispatchers.Main, CoroutineStart.DEFAULT, null, {
             result.success(permissionClient.check(permission).result)
-        }
+        })
     }
 
     private fun configure(settings: Settings, result: MethodChannel.Result) {
@@ -61,9 +67,9 @@ class Channels(private val permissionClient: PermissionClient,
     }
 
     private fun startMonitoring(request: DataRequest, result: MethodChannel.Result) {
-        launch(UI) {
+        GlobalScope.launch(Dispatchers.Main, CoroutineStart.DEFAULT, null, {
             result.success(beaconsClient.startMonitoring(request))
-        }
+        })
     }
 
     private fun stopMonitoring(region: RegionModel, result: MethodChannel.Result) {
