@@ -11,6 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  stream_channel: ^2.0.0
+
 flutter:
   plugin:
     androidPackage: io.intheloup.beacons

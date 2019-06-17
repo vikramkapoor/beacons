@@ -8,14 +8,14 @@ class _Channels {
 
   static const MethodChannel _channel = const MethodChannel('beacons');
 
-  static final EventChannel _rangingChannel =
-      EventChannel('beacons/ranging');
+  static final StreamsChannel _rangingChannel =
+      new StreamsChannel('beacons/ranging');
 
-  static final EventChannel _monitoringChannel =
-  EventChannel('beacons/monitoring');
+  static final StreamsChannel _monitoringChannel =
+      new StreamsChannel('beacons/monitoring');
 
-  static final EventChannel _backgroundMonitoringChannel =
-  EventChannel('beacons/backgroundMonitoring');
+  static final StreamsChannel _backgroundMonitoringChannel =
+      new StreamsChannel('beacons/backgroundMonitoring');
 
   Future<BeaconsResult> checkStatus(_StatusRequest request) async {
     final response = await _invokeChannelMethod(
